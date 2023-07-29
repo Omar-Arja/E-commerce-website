@@ -131,6 +131,7 @@ header {
   align-items: center;
   padding: 0 10rem;
   column-gap: 5rem;
+  max-height: 100vh;
 }
 
 .home-img {
@@ -194,4 +195,9 @@ header {
 
 .button-add img {
   margin-right: .5rem;
+}
+
+.redirect {
+  font-weight: 700;
+  font-size: 1.15rem;
 }
