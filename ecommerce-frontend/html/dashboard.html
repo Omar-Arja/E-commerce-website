@@ -22,16 +22,16 @@
         <div id="nav-menu">
           <ul class="nav-list">
             <li class="nav-item">
-              <a href="dashboard.html" class="nav-link">Home</a>
+              <a href="dashboard.html" class="nav-link" id="nav-home">Home</a>
             </li>
             <li class="nav-item">
-              <a href="products.html" class="nav-link">Products</a>
+              <a href="#" class="nav-link" id="nav-products">Products</a>
             </li>
             <li class="nav-item">
-              <a href="cart.html" class="nav-link">Cart</a>
+              <a href="#" class="nav-link" id="nav-cart">Cart</a>
             </li>
             <li class="nav-item">
-              <a href="contactus.html" class="nav-link">Contact Us</a>
+              <a href="#" class="nav-link" id="nav-contactus">Contact Us</a>
             </li>
           </ul>
         </div>
@@ -70,11 +70,13 @@
         </div>
       </section>
 
-      <section class="products section">
+      <section class="products section" id="products">
         
       </section>
 
 
     </main>
   </body>
+  <script src="../js/script.js"></script>
+  <script>pages.loadFor("dashboard")</script>
 </html>
