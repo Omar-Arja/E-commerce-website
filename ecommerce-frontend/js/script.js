@@ -6,13 +6,14 @@ pages.loadFor = (page) => {
 
 // home page
 pages.page_dashboard = () => {
+    pages.showSection('home')
     pages.activeLink('nav-home')
     pages.navbar()
     pages.clickedLink()
     document.querySelector('.redirect').addEventListener('click', () => {
         pages.page_products()
     })
-    
+
 
 }
 
@@ -30,6 +31,8 @@ pages.navbar = () => {
 // products tab
 pages.page_products = () => {
     pages.showSection('products')
+    pages.activeLink('nav-products')
+
 
 }
 
