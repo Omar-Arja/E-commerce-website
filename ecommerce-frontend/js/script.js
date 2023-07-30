@@ -47,7 +47,16 @@ pages.page_signup = () => {
     const signup_email = document.querySelector('#signup-email')
     const signup_password = document.querySelector('#signup-password')
     const signup_confirm_password = document.querySelector('#signup-confirm-password')
+    const signup_type = document.getElementById('signup-checkbox')
     const signup_btn = document.querySelector('#signup-btn')
+
+    signup_type.addEventListener('change', () => {
+        if (signup_type.checked) {
+            signup_type.value = 'admnin'
+        } else {
+            signup_type.value = 'buyer'
+        }
+    })
 
     signup_btn.addEventListener('click', () => {
         if (signup_name.value != '' && signup_email.value != '' && signup_password.value != '' && signup_confirm_password.value != '' && signup_password.value == signup_confirm_password.value) {
@@ -56,6 +65,8 @@ pages.page_signup = () => {
             data.append('name', signup_name.value)
             data.append('email', signup_email.value)
             data.append('password', signup_password.value)
+            data.append('type', signup_type.value)
+            console.log(data, signup_type.value, signup_type.checked, signup_name.value, signup_email.value, signup_password.value, signup_confirm_password.value)
         } else {
             
         }

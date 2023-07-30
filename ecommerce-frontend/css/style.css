@@ -454,7 +454,6 @@ header {
   text-transform: uppercase;
   overflow: hidden;
   transition: .5s;
-  margin-top: 40px;
   letter-spacing: 4px
 }
 
@@ -490,4 +489,63 @@ header {
   height: 2px;
   background: linear-gradient(90deg, transparent, #a1a4a1);
   animation: btn-anim1 2s linear infinite;
+}
+
+.redirect-signup {
+  margin-top: 2rem;
+  position: absolute;
+  top: 84%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.redirect-signin {
+  margin-top: 2rem;
+  position: absolute;
+  top: 79%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#login-btn {
+  margin-top: 12px;
+  margin-bottom: 20px;
+}
+
+#signup-btn {
+  margin-bottom: 30px;
+}
+
+.signup-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.signup-checkbox .container {
+  cursor: pointer;
+}
+
+.signup-checkbox .container input {
+  display: none;
+}
+
+.signup-checkbox .container svg {
+  overflow: visible;
+}
+
+.signup-checkbox path {
+  fill: none;
+  stroke: white;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;
+  stroke-dasharray: 241 9999999;
+  stroke-dashoffset: 0;
+}
+
+.container input:checked ~ svg .path {
+  stroke-dasharray: 70.5096664428711 9999999;
+  stroke-dashoffset: -262.2723388671875;
 }
