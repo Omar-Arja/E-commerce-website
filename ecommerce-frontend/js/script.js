@@ -24,6 +24,12 @@ pages.page_products = () => {
 
 }
 
+pages.page_cart = () => {
+    pages.showSection('cart')
+    pages.activeLink('nav-cart')
+    
+}
+
 // login page
 pages.page_index = () => {
     const login_email = document.querySelector('#login-email')
@@ -66,7 +72,7 @@ pages.page_signup = () => {
             data.append('email', signup_email.value)
             data.append('password', signup_password.value)
             data.append('type', signup_type.value)
-            console.log(data, signup_type.value, signup_type.checked, signup_name.value, signup_email.value, signup_password.value, signup_confirm_password.value)
+
         } else {
             
         }
@@ -93,7 +99,6 @@ pages.clickedLink = () => {
             let id = item.id
             pages.activeLink(id)
             clicked_page = id.split('-')[1]
-            console.log(clicked_page)
             eval(`pages.page_${clicked_page}()`)
         })
     })
