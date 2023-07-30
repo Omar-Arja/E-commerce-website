@@ -14,7 +14,19 @@ pages.page_dashboard = () => {
         pages.page_products()
     })
 
+}
 
+// products tab
+pages.page_products = () => {
+    pages.showSection('products')
+    pages.activeLink('nav-products')
+
+
+}
+
+// Login page
+pages.page_index = () => {
+    
 }
 
 // navbar
@@ -26,14 +38,6 @@ pages.navbar = () => {
             document.querySelector('header').classList.remove('bg-body')
         }
     }
-}
-
-// products tab
-pages.page_products = () => {
-    pages.showSection('products')
-    pages.activeLink('nav-products')
-
-
 }
 
 // click on navbar links
