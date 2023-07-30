@@ -14,7 +14,7 @@ pages.page_dashboard = () => {
         pages.page_products()
     })
 
-    
+
 
 }
 
@@ -95,7 +95,7 @@ pages.navbar = () => {
     }
 }
 
-// cart quantity function
+// cart quantity functionality
 pages.cartQuantity = () => {
     const cart_item_quantity = document.querySelector('.cart-item-quantity');
     const input_field = cart_item_quantity.querySelector('.cart-item-quantity-input');
