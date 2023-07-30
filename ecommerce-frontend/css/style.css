@@ -381,7 +381,7 @@ header {
   font-weight: 600;
 }
 
-.login-container {
+.signup-login-container {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
@@ -401,6 +401,12 @@ header {
   box-sizing: border-box;
   box-shadow: 0 15px 25px rgba(0,0,0,.6);
   border-radius: 10px;
+}
+
+.signup-box {
+  position: absolute;
+  top: 60%;
+  left: 50%;
 }
 
 .login-box .user-box {

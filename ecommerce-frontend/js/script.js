@@ -32,7 +32,7 @@ pages.page_index = () => {
 
     login_btn.addEventListener('click', () => {
         if (login_email.value != '' && login_password.value != '') {
-            login_btn.innerHTML = 'Loading...'
+            login_btn.innerHTML = 'Loading... <span></span>'
             const data = new FormData()
             data.append('email', login_email.value)
             data.append('password', login_password.value)
@@ -56,9 +56,8 @@ pages.page_signup = () => {
             data.append('name', signup_name.value)
             data.append('email', signup_email.value)
             data.append('password', signup_password.value)
-
         } else {
-            signup_btn.innerHTML = 'Sign Up'
+            
         }
 
     })
