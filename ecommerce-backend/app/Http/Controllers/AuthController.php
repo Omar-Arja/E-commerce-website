@@ -46,15 +46,30 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'usertype_id' => 'required|integer',
+            'password' => 'required|string|min:5',
+            'type' => 'required|string',
         ]);
+
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Email already exists',
+            ], 400);
+        }
+
+        $usertype_id = 2;
+        if($request->type == 'admin'){
+            $usertype_id = 1;
+        }else if($request->type == 'buyer'){
+            $usertype_id = 2;
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'usertype_id' => $request->usertype_id,
+            'usertype_id' => $usertype_id,
         ]);
 
         $token = Auth::login($user);

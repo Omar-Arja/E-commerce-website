@@ -52,6 +52,7 @@ pages.page_index = () => {
 
 // signup page
 pages.page_signup = () => {
+    console.log('signup')
     const signup_name = document.querySelector('#signup-name')
     const signup_email = document.querySelector('#signup-email')
     const signup_password = document.querySelector('#signup-password')
@@ -67,7 +68,9 @@ pages.page_signup = () => {
         }
     })
 
-    signup_btn.addEventListener('click', () => {
+    signup_btn.addEventListener('click', (event) => {
+        event.preventDefault()
+        console.log("clicked")
         if (signup_name.value != '' && signup_email.value != '' && signup_password.value != '' && signup_confirm_password.value != '' && signup_password.value == signup_confirm_password.value) {
             signup_btn.innerHTML = 'Loading...'
             const data = new FormData()
@@ -76,8 +79,30 @@ pages.page_signup = () => {
             data.append('password', signup_password.value)
             data.append('type', signup_type.value)
 
-        } else {
+            fetch('http://127.0.0.1:8000/api/auth/register', {
+                method: 'POST',
+                body: data,
+                redirect: 'follow'
+            }).then(response => response.json())
+                .then(data => {
+                    if (data.status == 'success') {
+                        console.log("then if", data)
+                        signup_btn.innerHTML = 'Success'
+                        setTimeout(() => {window.location.href = 'index.html'}, 2000)
+                    } else {
+                        signup_btn.innerHTML = 'Failed'
+                        setTimeout(() => {signup_btn.innerHTML = 'Sign Up'}, 2000)
+                    }
+                }
+                ).catch(error => {
+                    signup_btn.innerHTML = 'Failed'
+                    setTimeout(() => {signup_btn.innerHTML = 'Sign Up'}, 1000)
+                }
+                )
 
+        } else {
+            signup_btn.innerHTML = 'Failed'
+            setTimeout(() => {signup_btn.innerHTML = 'Sign Up'}, 2000)
         }
 
     })
