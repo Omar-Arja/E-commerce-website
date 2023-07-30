@@ -9,6 +9,9 @@ pages.loadFor = (page) => {
 
 // home page
 pages.page_dashboard = () => {
+    if (localStorage.getItem('type') == 'buyer') {
+        document.getElementById('admin-panel').style.display = 'none'
+    }
     pages.showSection('home')
     pages.activeLink('nav-home')
     pages.navbar()
@@ -36,6 +39,15 @@ pages.page_cart = () => {
 
 }
 
+pages.page_panel = () => {
+    pages.showSection('panel')
+    pages.activeLink('nav-panel')
+    pages.navbar()
+    pages.clickedLink()
+
+
+}
+
 // login page
 pages.page_index = () => {
     const login_email = document.querySelector('#login-email')
@@ -57,41 +69,42 @@ pages.page_index = () => {
                 .then(data => {
                     if (data.status == 'success') {
                         login_btn.innerHTML = 'Success'
-                        setTimeout(() => {window.location.href = 'dashboard.html'}, 2000)
+                        localStorage.clear()
                         localStorage.setItem('token', data.authorisation.token)
+                        localStorage.setItem('type', data.type)
+                        setTimeout(() => { window.location.href = 'dashboard.html' }, 2000)
                     } else {
                         login_btn.innerHTML = 'Failed'
-                        setTimeout(() => {login_btn.innerHTML = 'Login'}, 2000)
+                        setTimeout(() => { login_btn.innerHTML = 'Login' }, 2000)
                     }
                 }
                 ).catch(error => {
                     login_btn.innerHTML = 'Failed'
-                    setTimeout(() => {login_btn.innerHTML = 'Login'}, 2000)
+                    setTimeout(() => { login_btn.innerHTML = 'Login' }, 2000)
                 }
                 )
 
         }
         else {
-            console.log("else")
             login_btn.innerHTML = 'Failed'
-            setTimeout(() => {login_btn.innerHTML = 'Login'}, 2000)
+            setTimeout(() => { login_btn.innerHTML = 'Login' }, 2000)
         }
     })
 }
 
 // signup page
 pages.page_signup = () => {
-    console.log('signup')
     const signup_name = document.querySelector('#signup-name')
     const signup_email = document.querySelector('#signup-email')
     const signup_password = document.querySelector('#signup-password')
     const signup_confirm_password = document.querySelector('#signup-confirm-password')
     const signup_type = document.getElementById('signup-checkbox')
     const signup_btn = document.querySelector('#signup-btn')
+    signup_type.value = 'buyer'
 
     signup_type.addEventListener('change', () => {
         if (signup_type.checked) {
-            signup_type.value = 'admnin'
+            signup_type.value = 'admin'
         } else {
             signup_type.value = 'buyer'
         }
@@ -99,7 +112,6 @@ pages.page_signup = () => {
 
     signup_btn.addEventListener('click', (event) => {
         event.preventDefault()
-        console.log("clicked")
         if (signup_name.value != '' && signup_email.value != '' && signup_password.value != '' && signup_confirm_password.value != '' && signup_password.value == signup_confirm_password.value) {
             signup_btn.innerHTML = 'Loading...'
             const data = new FormData()
@@ -116,21 +128,21 @@ pages.page_signup = () => {
                 .then(data => {
                     if (data.status == 'success') {
                         signup_btn.innerHTML = 'Success'
-                        setTimeout(() => {window.location.href = 'index.html'}, 2000)
+                        setTimeout(() => { window.location.href = 'index.html' }, 2000)
                     } else {
                         signup_btn.innerHTML = 'Failed'
-                        setTimeout(() => {signup_btn.innerHTML = 'Sign Up'}, 2000)
+                        setTimeout(() => { signup_btn.innerHTML = 'Sign Up' }, 2000)
                     }
                 }
                 ).catch(error => {
                     signup_btn.innerHTML = 'Failed'
-                    setTimeout(() => {signup_btn.innerHTML = 'Sign Up'}, 2000)
+                    setTimeout(() => { signup_btn.innerHTML = 'Sign Up' }, 2000)
                 }
                 )
 
         } else {
             signup_btn.innerHTML = 'Failed'
-            setTimeout(() => {signup_btn.innerHTML = 'Sign Up'}, 2000)
+            setTimeout(() => { signup_btn.innerHTML = 'Sign Up' }, 2000)
         }
 
     })
@@ -172,34 +184,41 @@ pages.cartQuantity = () => {
     });
 }
 
-// click on navbar links
-pages.clickedLink = () => {
-    document.querySelectorAll('.nav-link').forEach(item => {
-        item.addEventListener('click', () => {
-            const id = item.id
-            pages.activeLink(id)
-            clicked_page = id.split('-')[1]
-            eval(`pages.page_${clicked_page}()`)
-        })
-    })
-}
 pages.page_home = () => {
     pages.page_dashboard()
 }
 
+// handle click events on navbar links
+function handleLinkClick() {
+    const id = this.id
+    pages.activeLink(id)
+    clicked_page = id.split('-')[1]
+    console.log(clicked_page)
+    eval(`pages.page_${clicked_page}()`)
+}
+
+// click on navbar links
+pages.clickedLink = () => {
+            document.querySelectorAll('.nav-link').forEach(item => {
+                item.removeEventListener('click', handleLinkClick)
+                item.addEventListener('click', handleLinkClick)
+
+                })
+        }
+
 // add active class to clicked link
 pages.activeLink = (page) => {
-    nav_items = document.querySelectorAll('.nav-link')
-    nav_items.forEach(item => {
-        item.classList.remove('active-link')
-    })
-    document.querySelector(`#${page}`).classList.add('active-link')
-}
+            nav_items = document.querySelectorAll('.nav-link')
+            nav_items.forEach(item => {
+                item.classList.remove('active-link')
+            })
+            document.querySelector(`#${page}`).classList.add('active-link')
+        }
 
 // hide all sections except chosen section
 pages.showSection = (section) => {
-    document.querySelectorAll('section').forEach(item => {
-        item.classList.add('d-none')
-    })
-    document.querySelector(`#${section}`).classList.remove('d-none')
-}
+            document.querySelectorAll('section').forEach(item => {
+                item.classList.add('d-none')
+            })
+            document.querySelector(`#${section}`).classList.remove('d-none')
+        }

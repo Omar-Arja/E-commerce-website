@@ -30,10 +30,20 @@ class AuthController extends Controller
             ], 401);
         }
 
+        $type = "buyer";
+        $usertype_id = Auth::user()->where('email', $request->email)->first()->usertype_id;
+        if ($usertype_id == 1) {
+            $type = "admin";
+        }
+        else if ($usertype_id == 2) {
+            $type = "buyer";
+        }
+        
         $user = Auth::user();
         return response()->json([
                 'status' => 'success',
                 'user' => $user,
+                'type' => $type,
                 'authorisation' => [
                     'token' => $token,
                     'type' => 'bearer',
