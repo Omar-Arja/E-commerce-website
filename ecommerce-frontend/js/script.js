@@ -1,5 +1,8 @@
 const pages = {}
 
+
+pages.base_url = 'http://127.0.0.1:8000/api/'
+
 pages.loadFor = (page) => {
     eval(`pages.page_${page}()`)
 }
@@ -46,6 +49,32 @@ pages.page_index = () => {
             data.append('email', login_email.value)
             data.append('password', login_password.value)
 
+            fetch(`${pages.base_url}auth/login`, {
+                method: 'POST',
+                body: data,
+                redirect: 'follow'
+            }).then(response => response.json())
+                .then(data => {
+                    if (data.status == 'success') {
+                        login_btn.innerHTML = 'Success'
+                        setTimeout(() => {window.location.href = 'dashboard.html'}, 2000)
+                        localStorage.setItem('token', data.authorisation.token)
+                    } else {
+                        login_btn.innerHTML = 'Failed'
+                        setTimeout(() => {login_btn.innerHTML = 'Login'}, 2000)
+                    }
+                }
+                ).catch(error => {
+                    login_btn.innerHTML = 'Failed'
+                    setTimeout(() => {login_btn.innerHTML = 'Login'}, 2000)
+                }
+                )
+
+        }
+        else {
+            console.log("else")
+            login_btn.innerHTML = 'Failed'
+            setTimeout(() => {login_btn.innerHTML = 'Login'}, 2000)
         }
     })
 }
@@ -79,14 +108,13 @@ pages.page_signup = () => {
             data.append('password', signup_password.value)
             data.append('type', signup_type.value)
 
-            fetch('http://127.0.0.1:8000/api/auth/register', {
+            fetch(`${pages.base_url}auth/register`, {
                 method: 'POST',
                 body: data,
                 redirect: 'follow'
             }).then(response => response.json())
                 .then(data => {
                     if (data.status == 'success') {
-                        console.log("then if", data)
                         signup_btn.innerHTML = 'Success'
                         setTimeout(() => {window.location.href = 'index.html'}, 2000)
                     } else {
@@ -96,7 +124,7 @@ pages.page_signup = () => {
                 }
                 ).catch(error => {
                     signup_btn.innerHTML = 'Failed'
-                    setTimeout(() => {signup_btn.innerHTML = 'Sign Up'}, 1000)
+                    setTimeout(() => {signup_btn.innerHTML = 'Sign Up'}, 2000)
                 }
                 )
 
