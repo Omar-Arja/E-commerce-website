@@ -123,7 +123,7 @@ pages.cartQuantity = () => {
 pages.clickedLink = () => {
     document.querySelectorAll('.nav-link').forEach(item => {
         item.addEventListener('click', () => {
-            let id = item.id
+            const id = item.id
             pages.activeLink(id)
             clicked_page = id.split('-')[1]
             eval(`pages.page_${clicked_page}()`)
