@@ -14,6 +14,8 @@ pages.page_dashboard = () => {
         pages.page_products()
     })
 
+    
+
 }
 
 // products tab
@@ -27,7 +29,8 @@ pages.page_products = () => {
 pages.page_cart = () => {
     pages.showSection('cart')
     pages.activeLink('nav-cart')
-    
+    pages.cartQuantity()
+
 }
 
 // login page
@@ -42,7 +45,7 @@ pages.page_index = () => {
             const data = new FormData()
             data.append('email', login_email.value)
             data.append('password', login_password.value)
-            
+
         }
     })
 }
@@ -74,12 +77,12 @@ pages.page_signup = () => {
             data.append('type', signup_type.value)
 
         } else {
-            
+
         }
 
     })
 }
-            
+
 
 // navbar
 pages.navbar = () => {
@@ -90,6 +93,30 @@ pages.navbar = () => {
             document.querySelector('header').classList.remove('bg-body')
         }
     }
+}
+
+// cart quantity function
+pages.cartQuantity = () => {
+    const cart_item_quantity = document.querySelector('.cart-item-quantity');
+    const input_field = cart_item_quantity.querySelector('.cart-item-quantity-input');
+    const increase_btn = cart_item_quantity.querySelector('[data-action="increase"]');
+    const decrease_btn = cart_item_quantity.querySelector('[data-action="decrease"]');
+
+    increase_btn.addEventListener('click', () => {
+        input_field.stepUp();
+    });
+
+    decrease_btn.addEventListener('click', () => {
+        if (input_field.value > 1) {
+            input_field.stepDown();
+        }
+    });
+
+    input_field.addEventListener('input', () => {
+        if (input_field.value <= 0) {
+            input_field.value = 1;
+        }
+    });
 }
 
 // click on navbar links

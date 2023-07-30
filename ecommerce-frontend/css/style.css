@@ -636,3 +636,58 @@ header {
   font-weight: 700;
   color: var(--white-color);
 }
+
+
+/* written by Chatgpt */
+.cart-item-quantity {
+  width: 12rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #333;
+  color: var(--white-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+}
+
+.cart-item-quantity-btn {
+  background-color: #555;
+  color: var(--white-color);
+  border: none;
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-item-quantity-btn[data-action="increase"] {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.cart-item-quantity-btn[data-action="decrease"] {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.cart-item-quantity-input {
+  width: 5rem;
+  flex: 1;
+  background-color: #222;
+  color: var(--white-color);
+  border: none;
+  font-size: 1rem;
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+}
+
+.cart-item-quantity-input::-webkit-inner-spin-button,
+.cart-item-quantity-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cart-item-quantity-btn:hover {
+  background-color: #444;
+}
+/* end of code written by Chatgpt */
