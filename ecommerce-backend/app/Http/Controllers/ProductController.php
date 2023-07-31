@@ -10,6 +10,12 @@ class ProductController extends Controller
 {
     public function index(){
         $products = Product::all();
+
+        foreach ($products as $product) {
+            $category = Category::find($product->category_id)->name;
+            $product->category_id = $category;
+        }
+
         return response()->json([
             'status' => 'success',
             'products' => $products,
@@ -18,6 +24,9 @@ class ProductController extends Controller
 
     public function show($id){
         $product = Product::find($id);
+        $category = Category::find($product->category_id)->name;
+        $product->category_id = $category;
+
         return response()->json([
             'status' => 'success',
             'product' => $product,
