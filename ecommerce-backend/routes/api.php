@@ -27,15 +27,15 @@ Route::prefix('/auth')->group(function(){
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-Route::prefix('/admin')->group(function(){
-    Route::get('/all-products', [ProductController::class, 'index']);
-    Route::post('/products', [ProductController::class, 'store']);
-    Route::get('/products/{id}', [ProductController::class, 'show']);
-    Route::put('/products/{id}', [ProductController::class, 'update']);
-    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
-});
+Route::prefix('/products')->group(function(){
+    Route::prefix('/admin')->group(function(){
+        Route::get('/', [ProductController::class, 'index']);
+        Route::get('/{id}', [ProductController::class, 'show']);
+        Route::post('/', [ProductController::class, 'store']);
+        Route::post('/{id}', [ProductController::class, 'update']);
+        Route::delete('/{id}', [ProductController::class, 'destroy']);
+    });
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/{id}', [ProductController::class, 'show']);
 
-Route::prefix('/our-products')->group(function(){
-    Route::get('/all-products', [ProductController::class, 'index']);
-    Route::get('/products/{id}', [ProductController::class, 'show']);
 });

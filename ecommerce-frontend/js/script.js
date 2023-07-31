@@ -167,25 +167,41 @@ pages.cartQuantity = () => {
     const increase_btn = cart_item_quantity.querySelector('[data-action="increase"]');
     const decrease_btn = cart_item_quantity.querySelector('[data-action="decrease"]');
 
-    increase_btn.addEventListener('click', () => {
+    function increaseQuantity() {
         input_field.stepUp();
-    });
+    }
 
-    decrease_btn.addEventListener('click', () => {
+    function decreaseQuantity() {
         if (input_field.value > 1) {
             input_field.stepDown();
         }
-    });
+    }
 
-    input_field.addEventListener('input', () => {
+    function checkInput() {
         if (input_field.value <= 0) {
             input_field.value = 1;
         }
-    });
+    }
+
+    increase_btn.removeEventListener('click', increaseQuantity);
+    decrease_btn.removeEventListener('click', decreaseQuantity);
+    input_field.removeEventListener('input', checkInput);
+
+    increase_btn.addEventListener('click', increaseQuantity);
+    decrease_btn.addEventListener('click', decreaseQuantity);
+    input_field.addEventListener('input', checkInput);
 }
 
 pages.page_home = () => {
     pages.page_dashboard()
+}
+
+// click on navbar links
+pages.clickedLink = () => {
+    document.querySelectorAll('.nav-link').forEach(item => {
+        item.removeEventListener('click', handleLinkClick)
+        item.addEventListener('click', handleLinkClick)
+    })
 }
 
 // handle click events on navbar links
@@ -197,28 +213,19 @@ function handleLinkClick() {
     eval(`pages.page_${clicked_page}()`)
 }
 
-// click on navbar links
-pages.clickedLink = () => {
-            document.querySelectorAll('.nav-link').forEach(item => {
-                item.removeEventListener('click', handleLinkClick)
-                item.addEventListener('click', handleLinkClick)
-
-                })
-        }
-
 // add active class to clicked link
 pages.activeLink = (page) => {
-            nav_items = document.querySelectorAll('.nav-link')
-            nav_items.forEach(item => {
-                item.classList.remove('active-link')
-            })
-            document.querySelector(`#${page}`).classList.add('active-link')
-        }
+    nav_items = document.querySelectorAll('.nav-link')
+    nav_items.forEach(item => {
+        item.classList.remove('active-link')
+    })
+    document.querySelector(`#${page}`).classList.add('active-link')
+}
 
 // hide all sections except chosen section
 pages.showSection = (section) => {
-            document.querySelectorAll('section').forEach(item => {
-                item.classList.add('d-none')
-            })
-            document.querySelector(`#${section}`).classList.remove('d-none')
-        }
+    document.querySelectorAll('section').forEach(item => {
+        item.classList.add('d-none')
+    })
+    document.querySelector(`#${section}`).classList.remove('d-none')
+}
