@@ -3,6 +3,50 @@ const pages = {}
 
 pages.base_url = 'http://127.0.0.1:8000/api/'
 
+
+class Product {
+    constructor(id, name, price, image_url, description, color, category) {
+        this.id = id
+        this.name = name
+        this.price = price
+        this.image_url = image_url
+        this.description = description
+        this.color = color.charAt(0).toUpperCase() + color.slice(1)
+        this.category = category.charAt(0).toUpperCase() + category.slice(1)
+    }
+
+    displayProductCard() {
+        return  `<div class="product-card" id="${this.id}">
+        <img src="${this.image_url}" alt="product image" class="product-img">
+        <div class="product-inner">
+            <div class="product-content">
+                <div class="front-card">
+                <div class="product-info">
+                    <h3 class="product-title">${this.color}</h3>
+                    <span class="product-price">$${this.price}</span>
+                </div>
+                </div>
+                <div class="back-card">
+                    <p class="product-description"><span class="product-category">${this.category}</span><br>${this.description}</p>
+            </div>
+        </div>  
+    </div>
+    <div class="product-buttons">
+        <button class="button-add icon favorite">
+            <img src="../assets/images/heart.svg" alt="heart icon">
+          </button>
+        <button class="button-add icon cart">
+          <img src="../assets/images/shopping-bag-line.svg" alt="shopping bag icon">
+        </button>
+    </div>
+</div>`
+    }
+
+
+}
+
+
+
 pages.loadFor = (page) => {
     eval(`pages.page_${page}()`)
 }

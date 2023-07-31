@@ -385,6 +385,11 @@ header {
   margin-bottom: -0.2rem;
 }
 
+.product-category {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
 .product-price {
   font-size: 1.15rem;
   font-weight: 600;

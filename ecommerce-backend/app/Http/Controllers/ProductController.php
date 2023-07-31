@@ -37,10 +37,10 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'color' => 'required|string|max:255',
             'price' => 'required|numeric',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category' => 'required|string|max:200',
-
         ]);
         
 
@@ -57,8 +57,10 @@ class ProductController extends Controller
             $product->image_url = $image_url;
 
             try {
+                $request->category = strtolower($request->category);
                 $category_id = Category::where('name', $request->category)->first()->id;
             } catch (\Throwable $th) {
+                $request->category = strtolower($request->category);
                 $category = new Category();
                 $category->name = $request->category;
                 $category->save();
@@ -87,6 +89,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'color' => 'required|string|max:255',
             'price' => 'required|numeric',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category' => 'required|string|max:200',
