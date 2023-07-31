@@ -47,7 +47,16 @@ class ProductController extends Controller
             $image_url = '/ecommerce-backend/public/images/'.$image_name;
             $product->image_url = $image_url;
 
-            $category_id = Category::where('name', $request->category)->first()->id;
+            try {
+                $category_id = Category::where('name', $request->category)->first()->id;
+            } catch (\Throwable $th) {
+                $category = new Category();
+                $category->name = $request->category;
+                $category->save();
+                $category_id = $category->id;
+            }
+
+
             $product->category_id = $category_id;
 
 
