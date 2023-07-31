@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartItemController;
 
 
 /*
@@ -37,5 +39,17 @@ Route::prefix('/products')->group(function(){
     });
     Route::get('/', [ProductController::class, 'index']);
     Route::get('/{id}', [ProductController::class, 'show']);
+});
 
+Route::prefix('/cart')->group(function(){
+    Route::get('/', [CartController::class, 'index']);
+    Route::post('/', [CartController::class, 'store']);
+    Route::delete('/{id}', [CartController::class, 'destroy']);
+
+    Route::prefix('/items')->group(function(){
+        Route::get('/', [CartItemController::class, 'index']);
+        Route::post('/', [CartItemController::class, 'store']);
+        Route::post('/{id}', [CartItemController::class, 'update']);
+        Route::delete('/{id}', [CartItemController::class, 'destroy']);
+    });
 });

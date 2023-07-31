@@ -103,8 +103,6 @@ class ProductController extends Controller
                 'message' => 'Unauthorized',
             ], 401);
         }
-
-
     }
 
     public function destroy($id) {
