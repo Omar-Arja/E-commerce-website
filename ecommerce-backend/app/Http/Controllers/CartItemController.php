@@ -32,6 +32,7 @@ class CartItemController extends Controller
                 $name = Product::find($cart_item->product_id)->name;
                 $image_url = Product::find($cart_item->product_id)->image_url;
                 $price = Product::find($cart_item->product_id)->price;
+                $price = $price * $cart_item->quantity;
 
                 $cart_item->name = $name;
                 $cart_item->image_url = $image_url;
@@ -50,6 +51,7 @@ class CartItemController extends Controller
                 $name = Product::find($cart_item->product_id)->name;
                 $image_url = Product::find($cart_item->product_id)->image_url;
                 $price = Product::find($cart_item->product_id)->price;
+                $price = $price * $cart_item->quantity;
 
                 $cart_item->name = $name;
                 $cart_item->image_url = $image_url;

@@ -56,6 +56,27 @@ class Cart {
         this.price = price
         this.quantity = quantity
     }
+
+    displayCartItem() {
+        return `<div class="cart-item" id="${this.product_id}">
+        <div class="cart-item-left">
+            <img src="${this.image_url}" alt="product image"  class="cart-item-img">
+            <h3 class="cart-item-title">${this.name}</h3>
+        </div>
+        <div class="cart-item-right">
+            <div class="cart-item-quantity">
+                <button type="button" class="cart-item-quantity-btn" data-action="decrease">-</button>
+                <input type="number" class="cart-item-quantity-input" value="${this.quantity}">
+                <button type="button" class="cart-item-quantity-btn" data-action="increase">+</button>
+            </div>
+            <div class="cart-item-price">$${this.price}</div>
+            <button type="button" class="remove-btn cart-remove-item" onclick="removeFromCart(${this.product_id})">
+                Remove Item
+            </button>
+        </div>
+    </div>`
+    }
+
 }
 
 pages.loadFor = (page) => {
@@ -95,13 +116,13 @@ pages.page_products = () => {
     }).then(response => response.json())
         .then((data) => {
             data.products.forEach(product => {
-                product = new Product(product.id, 
-                product.name, 
-                product.price, 
-                product.image_url, 
-                product.description, 
-                product.color, 
-                product.category_id)
+                product = new Product(product.id,
+                    product.name,
+                    product.price,
+                    product.image_url,
+                    product.description,
+                    product.color,
+                    product.category_id)
 
                 products.push(product)
                 document.querySelector('.products-container').innerHTML += product.displayProductCard()
@@ -110,10 +131,13 @@ pages.page_products = () => {
 
 }
 
+let cart_items = []
+// cart tab
 pages.page_cart = () => {
     pages.showSection('cart')
     pages.activeLink('nav-cart')
-    pages.cartQuantity()
+    pages.updateCart()
+
 
 }
 
@@ -310,6 +334,45 @@ function addToCart(id) {
             console.log(error)
         })
 
+}
+
+// remove from cart
+function removeFromCart(id) {
+    document.getElementById(`${id}`).remove()
+    fetch(`${pages.base_url}cart/${id}`, {
+        method: 'DELETE',
+        headers: user_header,
+        redirect: 'follow'
+    }).then(response => response.json())
+        .then(data => {
+            if (data.status == 'success') {
+                document.getElementById(`${id}`).remove()
+                console.log("product removed from cart", data)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+}
+
+// update cart
+pages.updateCart = () => {
+    document.querySelector('.cart-items-container').innerHTML = ''
+
+    cart_items = []
+
+    fetch(`${pages.base_url}cart/`, {
+        method: 'GET',
+        headers: user_header
+    })
+        .then(response => response.json())
+        .then((data) => {
+            data.cart_items.forEach(item => {
+                item = new Cart(item.id, item.product_id, item.name, item.image_url, item.price, item.quantity)
+                cart_items.push(item)
+                document.querySelector('.cart-items-container').innerHTML += item.displayCartItem()
+                pages.cartQuantity()
+            })
+        }).catch(error => console.log(error))
 }
 
 // add active class to clicked link
