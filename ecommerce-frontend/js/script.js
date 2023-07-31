@@ -34,7 +34,7 @@ class Product {
         </div>  
     </div>
     <div class="product-buttons">
-        <button class="button-add icon favorite">
+        <button class="button-add icon favorite" onclick="addToFavorites(${this.id})">
             <img src="../assets/images/heart.svg" alt="heart icon">
           </button>
         <button class="button-add icon cart" onclick="addToCart(${this.id})">
@@ -344,6 +344,23 @@ function addToCart(id) {
         })
 
 }
+
+// add to favorite
+function addToFavorites(id) {
+    fetch(`${pages.base_url}favorites/${id}`, {
+        method: 'POST',
+        headers: user_header,
+        redirect: 'follow'
+    }).then(response => response.json())
+        .then(data => {
+            if (data.status == 'success') {
+                console.log("product added to favorite")
+            }
+        }
+        ).catch(error => {
+            console.log(error)
+        })
+    }
 
 // remove from cart
 function removeFromCart(id) {

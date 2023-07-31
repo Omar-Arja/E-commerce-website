@@ -52,7 +52,7 @@ Route::prefix('/cart')->group(function(){
 
 Route::prefix('/favorites')->group(function(){
     Route::get('/', [FavoriteController::class, 'index']);
-    Route::post('/', [FavoriteController::class, 'store']);
+    Route::post('/{id}', [FavoriteController::class, 'store']);
     Route::delete('/{id}', [FavoriteController::class, 'destroy']);
     Route::delete('/', [FavoriteController::class, 'destroyAll']);
 });
