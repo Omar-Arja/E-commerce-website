@@ -28,14 +28,34 @@ class CartItemController extends Controller
             $cart_id = $cart->id;
 
             $cart_items = CartItem::where('cart_id', $cart_id)->get();
+            foreach ($cart_items as $cart_item) {
+                $name = Product::find($cart_item->product_id)->name;
+                $image_url = Product::find($cart_item->product_id)->image_url;
+                $price = Product::find($cart_item->product_id)->price;
+
+                $cart_item->name = $name;
+                $cart_item->image_url = $image_url;
+                $cart_item->price = $price;
+            }
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'New cart created successfully.',
                 'cart_items' => $cart_items,
             ]);
 
         } else {
             $cart_items = CartItem::where('cart_id', $cart_id)->get();
+
+            foreach ($cart_items as $cart_item) {
+                $name = Product::find($cart_item->product_id)->name;
+                $image_url = Product::find($cart_item->product_id)->image_url;
+                $price = Product::find($cart_item->product_id)->price;
+
+                $cart_item->name = $name;
+                $cart_item->image_url = $image_url;
+                $cart_item->price = $price;
+            }
+
             return response()->json([
                 'status' => 'success',
                 'cart_items' => $cart_items,

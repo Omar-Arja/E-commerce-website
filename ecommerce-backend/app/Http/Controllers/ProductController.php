@@ -49,6 +49,7 @@ class ProductController extends Controller
             $product = new Product();
             $product->name = $request->name;
             $product->description = $request->description;
+            $product->color = $request->color;
             $product->price = $request->price;
 
             $image_name = time().'.'.$request->image->extension();  

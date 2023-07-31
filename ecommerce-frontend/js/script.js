@@ -3,6 +3,8 @@ const pages = {}
 
 pages.base_url = 'http://127.0.0.1:8000/api/'
 
+const user_header = { Authorization: `Bearer ${localStorage.getItem('token')}` }
+
 
 class Product {
     constructor(id, name, price, image_url, description, color, category) {
@@ -16,7 +18,7 @@ class Product {
     }
 
     displayProductCard() {
-        return  `<div class="product-card" id="${this.id}">
+        return `<div class="product-card" id="${this.id}">
         <img src="${this.image_url}" alt="product image" class="product-img">
         <div class="product-inner">
             <div class="product-content">
@@ -35,7 +37,7 @@ class Product {
         <button class="button-add icon favorite">
             <img src="../assets/images/heart.svg" alt="heart icon">
           </button>
-        <button class="button-add icon cart">
+        <button class="button-add icon cart" onclick="addToCart(${this.id})">
           <img src="../assets/images/shopping-bag-line.svg" alt="shopping bag icon">
         </button>
     </div>
@@ -45,7 +47,16 @@ class Product {
 
 }
 
-
+class Cart {
+    constructor(id, product_id, name, image_url, price, quantity) {
+        this.id = id
+        this.product_id = product_id
+        this.name = name
+        this.image_url = image_url
+        this.price = price
+        this.quantity = quantity
+    }
+}
 
 pages.loadFor = (page) => {
     eval(`pages.page_${page}()`)
@@ -68,11 +79,34 @@ pages.page_dashboard = () => {
 
 }
 
+
+let products = []
+
 // products tab
 pages.page_products = () => {
     pages.showSection('products')
     pages.activeLink('nav-products')
+    document.querySelector('.products-container').innerHTML = ''
+    products = []
 
+
+    fetch(`${pages.base_url}products/`, {
+        method: 'GET'
+    }).then(response => response.json())
+        .then((data) => {
+            data.products.forEach(product => {
+                product = new Product(product.id, 
+                product.name, 
+                product.price, 
+                product.image_url, 
+                product.description, 
+                product.color, 
+                product.category_id)
+
+                products.push(product)
+                document.querySelector('.products-container').innerHTML += product.displayProductCard()
+            })
+        }).catch(error => console.log(error))
 
 }
 
@@ -255,6 +289,27 @@ function handleLinkClick() {
     clicked_page = id.split('-')[1]
     console.log(clicked_page)
     eval(`pages.page_${clicked_page}()`)
+}
+
+// add to cart
+function addToCart(id) {
+    const data = new FormData()
+    data.append('product_id', id)
+    fetch(`${pages.base_url}cart/`, {
+        method: 'POST',
+        headers: user_header,
+        body: data,
+        redirect: 'follow'
+    }).then(response => response.json())
+        .then(data => {
+            if (data.status == 'success') {
+                console.log("product added to cart", data)
+            }
+        }
+        ).catch(error => {
+            console.log(error)
+        })
+
 }
 
 // add active class to clicked link
