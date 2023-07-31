@@ -146,6 +146,27 @@ class ProductController extends Controller
         }
     }
 
+    public function destroyAll(){
+        $user = auth()->user();
+
+        if ($user->usertype_id == 1) {
+            $products = Product::all();
+            foreach ($products as $product) {
+                $product->delete();
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'All products deleted successfully',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+    }
+
     
 
 }

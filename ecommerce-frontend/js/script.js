@@ -176,6 +176,7 @@ pages.page_index = () => {
                         login_btn.innerHTML = 'Success'
                         localStorage.clear()
                         localStorage.setItem('token', data.authorisation.token)
+                        localStorage.setItem('name', data.user.name)
                         localStorage.setItem('type', data.type)
                         setTimeout(() => { window.location.href = 'dashboard.html' }, 2000)
                     } else {
