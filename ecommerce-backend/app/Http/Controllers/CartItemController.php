@@ -163,5 +163,21 @@ class CartItemController extends Controller
 
     }
 
+    public function destroyAll(){
+        $user_id = auth()->user()->id;
+        $cart_id = Cart::where('user_id', $user_id)->first()->id;
+
+        $cart_items = CartItem::where('cart_id', $cart_id)->get();
+        foreach ($cart_items as $cart_item) {
+            $cart_item->delete();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cart items deleted successfully.',
+        ]); 
+
+    }
+
 
 }

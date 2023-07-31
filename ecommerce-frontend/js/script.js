@@ -137,6 +137,9 @@ pages.page_cart = () => {
     pages.showSection('cart')
     pages.activeLink('nav-cart')
     pages.updateCart()
+    const remove_all = document.getElementById('cart-remove-all')
+    remove_all.removeEventListener('click', deleteCart)
+    remove_all.addEventListener('click', deleteCart)
 
 
 }
@@ -271,11 +274,13 @@ pages.cartQuantity = () => {
 
     function increaseQuantity() {
         input_field.stepUp();
+        updateQuantity(input_field.value);
     }
 
     function decreaseQuantity() {
         if (input_field.value > 1) {
             input_field.stepDown();
+            updateQuantity(input_field.value);
         }
     }
 
@@ -294,6 +299,7 @@ pages.cartQuantity = () => {
     input_field.addEventListener('input', checkInput);
 }
 
+// redirect to home page
 pages.page_home = () => {
     pages.page_dashboard()
 }
@@ -315,6 +321,9 @@ function handleLinkClick() {
     eval(`pages.page_${clicked_page}()`)
 }
 
+// update cart quantity
+function updateQuantity(quantity) {}
+
 // add to cart
 function addToCart(id) {
     const data = new FormData()
@@ -327,7 +336,7 @@ function addToCart(id) {
     }).then(response => response.json())
         .then(data => {
             if (data.status == 'success') {
-                console.log("product added to cart", data)
+                console.log("product added to cart")
             }
         }
         ).catch(error => {
@@ -347,7 +356,24 @@ function removeFromCart(id) {
         .then(data => {
             if (data.status == 'success') {
                 document.getElementById(`${id}`).remove()
-                console.log("product removed from cart", data)
+                console.log("product removed from cart")
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+}
+
+// delete all cart items
+function deleteCart() {
+    fetch(`${pages.base_url}cart/`, {
+        method: 'DELETE',
+        headers: user_header,
+        redirect: 'follow'
+    }).then(response => response.json())
+        .then(data => {
+            if (data.status == 'success') {
+                document.querySelector('.cart-items-container').innerHTML = ''
+                console.log("cart deleted")
             }
         }).catch(error => {
             console.log(error)

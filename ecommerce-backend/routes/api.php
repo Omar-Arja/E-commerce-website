@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\FavoriteController;
 
 
 /*
@@ -46,4 +47,12 @@ Route::prefix('/cart')->group(function(){
     Route::post('/', [CartItemController::class, 'store']);
     Route::post('/{id}', [CartItemController::class, 'update']);
     Route::delete('/{id}', [CartItemController::class, 'destroy']);
+    Route::delete('/', [CartItemController::class, 'destroyAll']);
+});
+
+Route::prefix('/favorites')->group(function(){
+    Route::get('/', [FavoriteController::class, 'index']);
+    Route::post('/', [FavoriteController::class, 'store']);
+    Route::delete('/{id}', [FavoriteController::class, 'destroy']);
+    Route::delete('/', [FavoriteController::class, 'destroyAll']);
 });
