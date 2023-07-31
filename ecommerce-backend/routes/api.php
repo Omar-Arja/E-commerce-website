@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 
 /*
@@ -26,14 +28,14 @@ Route::prefix('/auth')->group(function(){
 });
 
 Route::prefix('/admin')->group(function(){
-    Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/all-products', [ProductController::class, 'index']);
     Route::post('/products', [ProductController::class, 'store']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
     Route::put('/products/{id}', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 });
 
-Route::prefix('/products')->group(function(){
+Route::prefix('/our-products')->group(function(){
     Route::get('/all-products', [ProductController::class, 'index']);
-    Route::get('/product/{id}', [ProductController::class, 'show']);
+    Route::get('/products/{id}', [ProductController::class, 'show']);
 });

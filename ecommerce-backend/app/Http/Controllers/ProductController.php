@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -22,5 +23,48 @@ class ProductController extends Controller
             'product' => $product,
         ]);
     }
+
+    public function store(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'category' => 'required|string|max:200',
+
+        ]);
+        
+
+        $user = auth()->user();
+        if ($user->usertype_id == 1) {
+            $product = new Product();
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->price = $request->price;
+
+            $image_name = time().'.'.$request->image->extension();  
+            $request->image->move(public_path('/images'), $image_name);
+            $image_url = '.../ecommerce-backend/public/images'.$image_name;
+            $product->image_url = $image_url;
+
+            $category_id = Category::where('name', $request->category)->first()->id;
+            $product->category_id = $category_id;
+
+
+            $product->save();
+            return response()->json([
+                'status' => 'success',
+                'product' => $product,
+            ]);
+        }
+        else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+    }
+
+    
 
 }
