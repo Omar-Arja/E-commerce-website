@@ -725,11 +725,11 @@ header {
 }
 
 #delete-all-products:hover {
-  background-color: red;
+  background-color: rgb(200, 8, 8);
 }
 
 .cart-item .product-remove-btn:hover {
-  background-color: red;
+  background-color: rgb(200, 8, 8);
 }
 
 .admin-products-container {
@@ -837,4 +837,12 @@ header {
   gap: .8rem;
   padding: 1rem 0;
   border-bottom: 1px solid var(--black-color-light);
+}
+
+.product-edit-btn {
+  background-color: var(--black-color-light);
+}
+
+.product-edit-btn:hover {
+  background-color: rgb(7, 7, 113) !important;
 }

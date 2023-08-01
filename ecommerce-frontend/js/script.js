@@ -164,15 +164,26 @@ pages.page_cart = () => {
 
 }
 
+// show modal function
 function showModal(title) {
     const product_modal = document.getElementById('product-modal');
     const modal_title = document.getElementById('modal-title');
     const modal_action_btn = document.getElementById('modal-action-btn');
 
     if (typeof title === 'number') {
+        current_product = admin_products.find(product => product.id == title)
+
+        document.getElementById('product-name').value = current_product.name
+        document.getElementById('product-description').value = current_product.description
+        document.getElementById('product-color').value = current_product.color
+        document.getElementById('product-price').value = current_product.price
+        document.getElementById('product-category').value = current_product.category
+
         modal_action_btn.innerText = 'Update Product'
+        modal_action_btn.classList.add('product-edit-btn')
         modal_action_btn.setAttribute('onclick', `updateProduct(${title})`)
     } else {
+        modal_action_btn.classList.remove('product-edit-btn')
         modal_action_btn.innerText = 'Add Product'
         modal_action_btn.setAttribute('onclick', 'addProduct()')
     }
@@ -181,6 +192,7 @@ function showModal(title) {
     product_modal.style.display = 'block';
 }
 
+// hide modal function
 function hideModal() {
     const product_modal = document.getElementById('product-modal');
     const product_form = document.getElementById('product-form');
@@ -215,6 +227,7 @@ pages.page_panel = () => {
     modal_exit_btn.addEventListener('click', () => {
         hideModal();
     });
+
 }
 
 // login page
@@ -517,6 +530,7 @@ pages.showSection = (section) => {
     document.querySelector(`#${section}`).classList.remove('d-none')
 }
 
+let admin_products = []
 // get products 
 pages.getProducts = () => {
     const container = document.querySelector('.admin-products-container')
@@ -534,6 +548,7 @@ pages.getProducts = () => {
                     product.description,
                     product.color,
                     product.category_id)
+                admin_products.push(product)
                 container.innerHTML += product.displayProductDetails()
             })
         }).catch(error => console.log(error))
@@ -578,4 +593,67 @@ function addProduct() {
             console.log(error)
         })
 
+}
+
+// update product
+function updateProduct(id) {
+    const product = document.getElementById(`${id}`)
+    const button = document.getElementById('modal-action-btn')
+    button.innerHTML = 'Loading...'
+
+    const data = new FormData()
+
+    data.append('name', document.getElementById('product-name').value)
+    data.append('description', document.getElementById('product-description').value)
+    data.append('color', document.getElementById('product-color').value)
+    data.append('price', document.getElementById('product-price').value)
+    data.append('image', document.getElementById('product-image').files[0])
+    data.append('category', document.getElementById('product-category').value)
+
+    fetch(`${pages.base_url}products/admin/${id}`, {
+        method: 'POST',
+        headers: user_header,
+        body: data,
+        redirect: 'follow'
+    }).then(response => response.json())
+        .then(data => {
+            if (data.status == 'success') {
+                console.log("product updated")
+                button.innerHTML = 'Success'
+                data.product = new Product(data.product.id, data.product.name, data.product.price, data.product.image_url, data.product.description, data.product.color, data.product.category_id)
+                product.querySelector('.cart-item-title').innerHTML = data.product.name
+                product.querySelector('.cart-item-price').innerHTML = data.product.price
+                product.querySelector('.cart-item-img').src = data.product.image_url
+                setTimeout(() => {
+                    hideModal()
+                    button.innerHTML = 'Update'
+                }, 1000)
+            }
+        }
+        ).catch(error => {
+            button.innerHTML = 'Failed'
+            setTimeout(() => {
+                button.innerHTML = 'Update'
+            }, 2000)
+
+            console.log(error)
+        })
+
+}
+
+// delete all products
+function deleteAllProducts() {
+    fetch(`${pages.base_url}products/admin/`, {
+        method: 'DELETE',
+        headers: user_header,
+        redirect: 'follow'
+    }).then(response => response.json())
+        .then(data => {
+            if (data.status == 'success') {
+                document.querySelector('.admin-products-container').innerHTML = ''
+                console.log("products deleted")
+            }
+        }).catch(error => {
+            console.log(error)
+        })
 }
