@@ -110,7 +110,42 @@
           </div>
           <div class="admin-products-container">
 
+            <!-- Admin Products -->
 
+          </div>
+
+          <!-- Modal -->
+    <div class="modal" id="product-modal">
+      <div class="modal-content" id="product-id">
+          <button class="modal-exit-btn" id="modal-exit-btn">&times;</button>
+          <h3 id="modal-title">Add Product</h3>
+          <form id="product-form" class="product-form">
+              <div class="product-row">
+                <label for="product-name">Name</label>
+                <input type="text" id="product-name" required>
+                <label for="product-price">Price</label>
+                <input type="number" id="product-price" required>
+              </div>
+              <div class="product-row">
+                <label for="product-image-url">Image</label>
+                <input type="file" id="product-image-url" required>
+                <label for="product-description">Description</label>
+                <textarea id="product-description" required></textarea>
+              </div>
+              <div class="product-row">
+                <label for="product-color">Color</label>
+                <input type="text" id="product-color" required>
+                <label for="product-category">Category</label>
+                <input type="text" id="product-category" required>
+              </div>
+              <button type="button" id="modal-action-btn">Add</button>
+      </form>
+      </div>
+  </div>
+
+
+        </div>
+        
       </section>
 
 

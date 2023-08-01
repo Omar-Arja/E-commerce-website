@@ -727,3 +727,114 @@ header {
 #delete-all-products:hover {
   background-color: red;
 }
+
+.cart-item .product-remove-btn:hover {
+  background-color: red;
+}
+
+.admin-products-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 650px;
+  background-color: var(--black-color-alt);
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-exit-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: var(--white-color);
+}
+
+.modal-title {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white-color);
+}
+
+.product-form label {
+  margin-bottom: 0.5rem;
+}
+
+#product-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .2rem;
+  width: 100%;
+}
+
+.product-form input,
+.product-form textarea {
+  align-self: flex-start;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: rgb(100, 100, 100);
+  font-size: 1rem;
+  padding: .5rem;
+  color: var(--white-color);
+}
+
+.product-form button {
+  width: 6rem;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: var(--black-color-light);
+  color: var(--white-color);
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-form button:hover {
+  background-color: forestgreen;
+}
+
+.product-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: .8rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--black-color-light);
+}

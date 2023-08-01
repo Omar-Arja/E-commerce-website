@@ -41,7 +41,27 @@ class Product {
           <img src="../assets/images/shopping-bag-line.svg" alt="shopping bag icon">
         </button>
     </div>
-</div>`
+   </div>`
+    }
+
+
+    displayProductDetails() {
+        return `<div class="cart-item" id="${this.id}">
+        <div class="cart-item-left">
+            <img src="${this.image_url}" alt="product image"  class="cart-item-img">
+            <h3 class="cart-item-title">${this.name}</h3>
+        </div>
+        <div class="cart-item-right">
+            
+            <div class="cart-item-price">$${this.price}</div>
+            <button type="button" class="remove-btn cart-remove-item product-edit-btn" onclick="showModal(${this.id})">
+                Edit Product
+            </button>
+            <button type="button" class="remove-btn cart-remove-item product-remove-btn" onclick="deleteFromProducts(${this.id})">
+                Delete Product
+            </button>
+        </div>
+    </div>`
     }
 
 
@@ -144,13 +164,57 @@ pages.page_cart = () => {
 
 }
 
+function showModal(title) {
+    const product_modal = document.getElementById('product-modal');
+    const modal_title = document.getElementById('modal-title');
+    const modal_action_btn = document.getElementById('modal-action-btn');
+
+    if (typeof title === 'number') {
+        modal_action_btn.innerText = 'Update Product'
+        modal_action_btn.setAttribute('onclick', `updateProduct(${title})`)
+    } else {
+        modal_action_btn.innerText = 'Add Product'
+        modal_action_btn.setAttribute('onclick', 'addProduct()')
+    }
+
+    modal_title.innerText = title;
+    product_modal.style.display = 'block';
+}
+
+function hideModal() {
+    const product_modal = document.getElementById('product-modal');
+    const product_form = document.getElementById('product-form');
+
+    product_modal.style.display = 'none';
+    product_form.reset();
+
+}
+
+
+// admin panel
 pages.page_panel = () => {
     pages.showSection('panel')
     pages.activeLink('nav-panel')
     pages.navbar()
     pages.clickedLink()
 
+    const admin_name = document.querySelector('.admin-title')
+    admin_name.innerHTML = localStorage.getItem('name')
+    pages.getProducts()
 
+    const product_modal = document.getElementById('product-modal');
+    const modal_exit_btn = document.getElementById('modal-exit-btn');
+    const modal_title = document.getElementById('modal-title');
+    const product_form = document.getElementById('product-form');
+    const modal_action_btn = document.getElementById('modal-action-btn');
+
+    document.getElementById('add-product').addEventListener('click', () => {
+        showModal('Add Product');
+    });
+
+    modal_exit_btn.addEventListener('click', () => {
+        hideModal();
+    });
 }
 
 // login page
@@ -323,7 +387,7 @@ function handleLinkClick() {
 }
 
 // update cart quantity
-function updateQuantity(quantity) {}
+function updateQuantity(quantity) { }
 
 // add to cart
 function addToCart(id) {
@@ -361,7 +425,7 @@ function addToFavorites(id) {
         ).catch(error => {
             console.log(error)
         })
-    }
+}
 
 // remove from cart
 function removeFromCart(id) {
@@ -392,6 +456,23 @@ function deleteCart() {
             if (data.status == 'success') {
                 document.querySelector('.cart-items-container').innerHTML = ''
                 console.log("cart deleted")
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+}
+
+// delete from products
+function deleteFromProducts(id) {
+    fetch(`${pages.base_url}products/admin/${id}`, {
+        method: 'DELETE',
+        headers: user_header,
+        redirect: 'follow'
+    }).then(response => response.json())
+        .then(data => {
+            if (data.status == 'success') {
+                document.getElementById(`${id}`).remove()
+                console.log("product deleted")
             }
         }).catch(error => {
             console.log(error)
@@ -434,4 +515,26 @@ pages.showSection = (section) => {
         item.classList.add('d-none')
     })
     document.querySelector(`#${section}`).classList.remove('d-none')
+}
+
+// get products 
+pages.getProducts = () => {
+    const container = document.querySelector('.admin-products-container')
+    container.innerHTML = ''
+    fetch(`${pages.base_url}products/admin/`, {
+        method: 'GET'
+    })
+        .then(response => response.json())
+        .then((data) => {
+            data.products.forEach(product => {
+                product = new Product(product.id,
+                    product.name,
+                    product.price,
+                    product.image_url,
+                    product.description,
+                    product.color,
+                    product.category_id)
+                container.innerHTML += product.displayProductDetails()
+            })
+        }).catch(error => console.log(error))
 }
