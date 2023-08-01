@@ -581,7 +581,7 @@ function addProduct() {
                 setTimeout(() => {
                     hideModal()
                     button.innerHTML = 'Add'
-                }, 1000)
+                }, 700)
             }
         }
         ).catch(error => {
@@ -627,7 +627,7 @@ function updateProduct(id) {
                 setTimeout(() => {
                     hideModal()
                     button.innerHTML = 'Update'
-                }, 1000)
+                }, 700)
             }
         }
         ).catch(error => {
@@ -643,6 +643,10 @@ function updateProduct(id) {
 
 // delete all products
 function deleteAllProducts() {
+    button = document.getElementById('delete-all-products')
+    container = document.querySelector('.admin-products-container')
+
+    button.innerHTML = 'Loading...'
     fetch(`${pages.base_url}products/admin/`, {
         method: 'DELETE',
         headers: user_header,
@@ -650,8 +654,11 @@ function deleteAllProducts() {
     }).then(response => response.json())
         .then(data => {
             if (data.status == 'success') {
-                document.querySelector('.admin-products-container').innerHTML = ''
                 console.log("products deleted")
+                setTimeout(() => {
+                    button.innerHTML = 'Delete All'
+                }, 1000)
+                container.innerHTML = ''
             }
         }).catch(error => {
             console.log(error)
