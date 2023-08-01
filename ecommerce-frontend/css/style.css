@@ -813,7 +813,7 @@ header {
 }
 
 .product-form button {
-  width: 6rem;
+  width: fit-content;
   padding: 0.5rem;
   border: none;
   border-radius: 0.25rem;

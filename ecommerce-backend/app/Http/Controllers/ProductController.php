@@ -68,11 +68,10 @@ class ProductController extends Controller
                 $category_id = $category->id;
             }
 
-
             $product->category_id = $category_id;
 
-
             $product->save();
+            $product->category_id = Category::find($category_id)->name;
             return response()->json([
                 'status' => 'success',
                 'product' => $product,
@@ -114,6 +113,8 @@ class ProductController extends Controller
 
             $product->save();
 
+            $category = Category::find($product->category_id)->name;
+            $product->category_id = $category;
             return response()->json([
                 'status' => 'success',
                 'product' => $product,

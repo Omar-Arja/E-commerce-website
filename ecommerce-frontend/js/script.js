@@ -538,3 +538,44 @@ pages.getProducts = () => {
             })
         }).catch(error => console.log(error))
 }
+
+// add product
+function addProduct() {
+    const button = document.getElementById('modal-action-btn')
+    button.innerHTML = 'Loading...'
+    const data = new FormData()
+    data.append('name', document.getElementById('product-name').value)
+    data.append('description', document.getElementById('product-description').value)
+    data.append('color', document.getElementById('product-color').value)
+    data.append('price', document.getElementById('product-price').value)
+    data.append('image', document.getElementById('product-image').files[0])
+    data.append('category', document.getElementById('product-category').value)
+
+    fetch(`${pages.base_url}products/admin/`, {
+        method: 'POST',
+        headers: user_header,
+        body: data,
+        redirect: 'follow'
+    }).then(response => response.json())
+        .then(data => {
+            if (data.status == 'success') {
+                console.log("product added")
+                button.innerHTML = 'Success'
+                data.product = new Product(data.product.id, data.product.name, data.product.price, data.product.image_url, data.product.description, data.product.color, data.product.category_id)
+                document.querySelector('.admin-products-container').innerHTML += data.product.displayProductDetails()
+                setTimeout(() => {
+                    hideModal()
+                    button.innerHTML = 'Add'
+                }, 1000)
+            }
+        }
+        ).catch(error => {
+            button.innerHTML = 'Failed'
+            setTimeout(() => {
+                button.innerHTML = 'Add'
+            }, 2000)
+
+            console.log(error)
+        })
+
+}
